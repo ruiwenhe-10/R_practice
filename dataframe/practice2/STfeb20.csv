@@ -1,0 +1,11 @@
+date,state,fips,cases,deaths
+2020-02-29,Arizona,04,1,0
+2020-02-29,California,06,28,0
+2020-02-29,Illinois,17,3,0
+2020-02-29,Massachusetts,25,1,0
+2020-02-29,Nebraska,31,13,0
+2020-02-29,Oregon,41,1,0
+2020-02-29,Texas,48,11,0
+2020-02-29,Utah,49,1,0
+2020-02-29,Washington,53,10,1
+2020-02-29,Wisconsin,55,1,0

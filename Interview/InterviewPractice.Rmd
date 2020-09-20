@@ -1,0 +1,61 @@
+## 1. 
+
+```{r}
+## show your code
+library(readxl)
+data.2 = read_excel("data 2.xlsx")
+
+cat("There were",nrow(data.2), "rows and", ncol(data.2), "columns in the data.")
+```
+
+Please provide the answer "inline", that is, as part of the text, for example (I'm using iris, you'll be using the data for lesson 13):
+
+> There were `r nrow(iris)` rows and `r ncol(iris)` columns in the data.
+
+## 2. 
+
+```{r}
+library(dplyr)
+## show your code
+data.2.2006 = data.2[data.2$YrSold == 2006,]
+cat("Average sale price for homes sold in Ames in 2006 is", mean(data.2.2006[grepl("Ames",data.2.2006$Neighborhood),]$SalePrice),"\n")
+
+#data.2 %>% group_by(Neighborhood) %>% summarise(mean.SalePrice = mean(SalePrice)) %>% arrange(desc(mean.SalePrice))
+
+cat("NoRidge was the top neighborhood and MeadowV was the bottom neighborhood")
+```
+
+Clearly identify the average sales price in 2006.  Clearly identify the most neighborhood with the highest average sales price and the one with the lowest.  You do not need to print out the ranks of all the neighborhoods. 
+
+## 3. 
+
+```{r}
+## show your code
+cat("Median sale price for homes sold in 2006 which have an indoor square footage of greater than or equal to 2000 ft (excluding porches, garages, decks, and veneers) is", median(data.2.2006[data.2.2006$GrLivArea>=2000,]$SalePrice), "\n")
+
+cat((length(data.2.2006[data.2.2006$GrLivArea>=2000,]$SalePrice) / nrow(data.2.2006))*100,"% of homes meet this criterion")
+
+```
+
+Please clearly identify the median sales price of homes which have an indoor square footage of greater than or equal to 2000 ft (excluding porches, garages, decks, and veneers) and identify the percentage of homes which met the criterion.
+
+## 4. 
+
+```{r}
+## show your code
+library(ggplot2)
+data.2$YrSold = as.character(data.2$YrSold)
+ggplot(data.2, aes(x=MoSold, fill=YrSold)) + geom_histogram(binwidth =0.5)
+```
+
+Provide a visualization and a brief discussion of your findings regarding seasonality of sales.
+```
+The amount of house selling is most in June every year. Yes, it is seasonality.
+```
+## 5. 
+
+```{r}
+ggplot(data=data.2,aes(x=GarageType,y=SalePrice,fill=GarageType)) + geom_bar(stat="identity")
+```
+
+Provide a visualization which identifies important remodeling factors.  No discussion necessary.
