@@ -1,0 +1,66 @@
+# The code used to clean the data
+
+
+options(width = 120) 
+load("Lesson10SU.RData") 
+library(DT) 
+datatable(movies100lesson10)
+
+
+
+
+## Your R code used to clean movies100lesson10
+library(tibble)
+for (i in c(1:dim(movies100lesson10)[1])){
+  name = unlist(strsplit(as.character(movies100lesson10[i,"Genre"]),"\n    \n        "))
+  movies100lesson10[i,name] <-  T
+}
+movies100lesson10[is.na(movies100lesson10)] <- F
+movies100lesson10 = movies100lesson10 %>% add_column(ActionAdventureThriller = ifelse((movies100lesson10$Adventure == TRUE | movies100lesson10$Action == TRUE | movies100lesson10$Thriller == TRUE),T,F), .before = "Action")
+movies100lesson10 = subset(movies100lesson10,select= -c(Genre,Adventure,Action,Thriller))
+
+movies100lesson10$Running.Time <- as.character(movies100lesson10$Running.Time)             
+
+for (i in c(1:dim(movies100lesson10)[1])){
+  t = unlist(strsplit(movies100lesson10[i,"Running.Time"], " "))
+  movies100lesson10[i,"Running.Time"] = as.numeric(t[1])*60 + as.numeric(t[3])
+}
+
+movies100lesson10$Running.Time <- as.numeric(movies100lesson10$Running.Time)     
+names(movies100lesson10)[8] = "PctOfTotal"
+names(movies100lesson10)[17] = "SciFi"
+
+
+movies100lesson10$Opening <- as.numeric(gsub('[$,]', '', movies100lesson10$Opening))
+movies100lesson10$Gross <- as.numeric(gsub('[$,]', '', movies100lesson10$Gross))
+movies100lesson10$intGross <- as.numeric(gsub('[$,]', '', movies100lesson10$intGross))
+movies100lesson10$Budget <- as.numeric(gsub('[$,]', '', movies100lesson10$Budget))
+movies100lesson10$Max.Th <- as.numeric(gsub('[$,]', '', movies100lesson10$Max.Th))
+movies100lesson10$Open.Th <- as.numeric(gsub('[$,]', '', movies100lesson10$Open.Th))
+movies100lesson10$PctOfTotal <- as.numeric(gsub('[%$,]', '', movies100lesson10$PctOfTotal))
+movies100lesson10$OpenDate = as.Date(movies100lesson10$OpenDate, '%b %d, %Y')
+movies100lesson10$CloseDate = as.Date(movies100lesson10$CloseDate, '%b %d, %Y')
+
+movies100lesson10$daysrun = movies100lesson10$CloseDate-movies100lesson10$OpenDate
+
+movies100lesson10 = subset(movies100lesson10,select = c(Rank,Release,Running.Time,mpaa,Gross,Opening,PctOfTotal,Max.Th,Open.Th,Distributor,intGross,Budget,OpenDate,CloseDate,ActionAdventureThriller,Drama,Comedy,SciFi,Family,Horror,Biography,daysrun))
+
+
+
+# datatable result
+
+
+library(DT)
+datatable(movies100lesson10) ## modify this please
+
+
+# summary result
+
+
+summary(movies100lesson10) ## modify this please
+
+
+# str result
+
+
+str(movies100lesson10) ## modify this please

@@ -1,0 +1,118 @@
+
+
+## 1 Line Graph with Multiple Lines and Legend
+# ```{r}
+load("ST3Covid19.RData")
+# ```
+# ```{r fig.width= 10}
+
+# this is a comment
+plot(CA$date,CA$dailydeaths,type = 'l',col = 'green')
+lines(FL$date,FL$dailydeaths,col = "purple")
+lines(TX$date,TX$dailydeaths,col = "blue")
+lines(smooth.spline(CA$dailydeaths ~ CA$date, spar = 0.5), col = "darkgreen", lwd = 2)
+lines(smooth.spline(FL$dailydeaths ~ FL$date, spar = 0.5), col = "darkgreen", lwd = 2)
+lines(smooth.spline(TX$dailydeaths ~ TX$date, spar = 0.5), col = "darkgreen", lwd = 2)
+legend("topleft",legend=c("CA","FL","TX"),col=c("green","purple","blue"), lty=1, cex=0.8)
+title(main = "Covid-19 Daily Deaths")
+# ```
+
+
+## 2 Boxplots 
+
+# ```{r}
+disney = read.csv("http://www.stat.ucla.edu/~vlew/datasets/DISNEY.csv")
+paypal = read.csv("http://www.stat.ucla.edu/~vlew/datasets/PAYPAL.csv")
+# ```
+# ```{r, fig.height = 6, fig.width = 8}
+
+boxplot(disney$Adj.Close ~ disney$YM,at = 1:12 - 0.1,col="skyblue",xlab = "Year-Month")
+boxplot(paypal$Adj.Close ~ paypal$YM,add=TRUE,at = 1:12 + 0.1,col="yellow")
+legend("bottom",legend = c("Disney","Paypal"),fill=c("skyblue","yellow"))
+title(main = "Boxplot Example - Stock Price 7/19 - 6/20")
+# ```
+
+## 3 Histograms of Yelp Ratings
+# ```{r}
+yelp3 = read.csv("http://www.stat.ucla.edu/~vlew/datasets/yelp3.csv")
+# ```
+# ```{r}
+hist(yelp3[yelp3["categories.0"] == "Vegan",]$stars,freq = F,col="orange",xlab = "Yelp Rating", main = "Vegan Ratings",xlim = c(1,5))
+
+
+hist(yelp3[yelp3["categories.0"] == "Buffets",]$stars,freq = F,col="blue",xlab = "Yelp Rating", main = "Buffet Ratings",xlim = c(1,5))
+
+
+hist(yelp3[yelp3["categories.0"] == "Sports Bars",]$stars,freq = F,col="darkred",xlab = "Yelp Rating", main = "Sports Bars Ratings",xlim = c(1,5))
+# ```
+
+
+## 4A Scatterplot Matrix
+# ```{r}
+library(ggplot2)
+midwest
+# ```
+
+# ```{r 4A, fig.height = 6, fig.width = 8}
+# this is a comment
+midwest_sub = midwest[,c(5,10,18,19,20,23)]
+midwest_sub
+pairs(midwest_sub,col=alpha("blue",1), main = "Scatterplot Matrix of ggplot dataset midwest",pch=19)
+# ```
+
+## 4B Scatterplot with lines for means, different colors, legend
+
+# ```{r 4B}
+
+ggplot(midwest,aes(perchsd,percollege,color = factor(state))) + geom_point() + theme(legend.position="left") + geom_hline(yintercept=median(midwest$percollege),color="red") + geom_vline(xintercept=median(midwest$perchsd),color="blue")+ggtitle("Plot of College degree on high school diploma with medians drawn")
+
+# ```
+
+## 4C Scatterplot with Regression line
+
+# ```{r 4C}
+
+# this is a comment
+ggplot(midwest,aes(percollege,percprof))+geom_point(color='blue')+ stat_smooth(method="lm", se=FALSE,color="red")+ggtitle("Plot of Professionals on percent college degree with regression line")
+
+
+
+
+# ```
+
+## 5A Two barplots
+# ```{r}
+diamonds
+# ```
+# ```{r 5A}
+ggplot(data=as.data.frame(table(diamonds$cut)),aes(x=Var1,y=Freq,fill=Var1)) + geom_bar(stat="identity") 
+
+
+ggplot(data=as.data.frame(table(diamonds$color)),aes(x=Var1,y=Freq,fill=Var1)) + geom_bar(stat="identity") 
+
+# ```
+
+## 5B Stacked Barplot
+
+# ```{r 5B}
+
+# this is a comment
+ggplot(data=as.data.frame(table(diamonds$color,diamonds$cut)),aes(x=Var1,y=Freq,fill=Var2)) + geom_bar(stat="identity")
+
+# ```
+
+## 5C Percent Stacked Barplot
+
+# ```{r 5C}
+prop.table(table(diamonds$color,diamonds$cut),1)
+ggplot(data=as.data.frame(prop.table(table(diamonds$color,diamonds$cut),1)),aes(x=Var1,y=Freq,fill=Var2)) + geom_bar(stat="identity")
+
+# ```
+
+## 5D Grouped Barplot
+
+# ```{r 5D}
+
+ggplot(data=as.data.frame(table(diamonds$color,diamonds$cut)),aes(x=Var1,y=Freq,fill=Var2)) + geom_bar(stat="identity",position=position_dodge())
+
+# ```
